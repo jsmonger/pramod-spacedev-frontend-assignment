@@ -1,8 +1,8 @@
-const express = require('express');
-const fs = require('fs');
-const path = require('path');
+const express = require("express");
+const fs = require("fs");
+const path = require("path");
 const router = express.Router();
-const DATA_PATH = path.join(__dirname, '../../../data/items.json');
+const DATA_PATH = path.join(__dirname, "../../../data/items.json");
 
 // Utility to read data (intentionally sync to highlight blocking issue)
 function readData() {
@@ -11,34 +11,50 @@ function readData() {
 }
 
 // GET /api/items
-router.get('/', (req, res, next) => {
+router.get("/", (req, res, next) => {
   try {
     const data = readData();
-    const { limit, q } = req.query;
+    const { limit: limitPerPage, q, page: pageNumber } = req.query;
+
     let results = data;
 
     if (q) {
       // Simple substring search (sub‑optimal)
-      results = results.filter(item => item.name.toLowerCase().includes(q.toLowerCase()));
+      results = results.filter((item) =>
+        item.name.toLowerCase().includes(q.toLowerCase()),
+      );
     }
 
-    if (limit) {
-      results = results.slice(0, parseInt(limit));
-    }
+    const total = results.length;
 
-    res.json(results);
+    const page = Math.max(parseInt(pageNumber, 10) || 1, 1);
+    const limit = Math.min(parseInt(limitPerPage, 10) || 10, 100);
+
+    const start = (page - 1) * limit;
+    const end = start + limit;
+    results = results.slice(start, end);
+
+    const result = {
+      data: results,
+      page,
+      limit,
+      total,
+      hasMore: total > page * limit,
+    };
+
+    res.json(result);
   } catch (err) {
     next(err);
   }
 });
 
 // GET /api/items/:id
-router.get('/:id', (req, res, next) => {
+router.get("/:id", (req, res, next) => {
   try {
     const data = readData();
-    const item = data.find(i => i.id === parseInt(req.params.id));
+    const item = data.find((i) => i.id === parseInt(req.params.id));
     if (!item) {
-      const err = new Error('Item not found');
+      const err = new Error("Item not found");
       err.status = 404;
       throw err;
     }
@@ -49,7 +65,7 @@ router.get('/:id', (req, res, next) => {
 });
 
 // POST /api/items
-router.post('/', (req, res, next) => {
+router.post("/", (req, res, next) => {
   try {
     // TODO: Validate payload (intentional omission)
     const item = req.body;

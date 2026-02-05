@@ -1,0 +1,16 @@
+.itemsContainer {
+    max-height: 400px;
+    min-height: 400px;
+    overflow-y: scroll;
+}
+
+.pagination {
+    display: flex;
+    gap: 1rem;
+}
+
+.footer {
+    display: flex;
+    gap: 4rem;
+    margin-top: 2rem;
+}
