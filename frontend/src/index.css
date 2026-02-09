@@ -1,16 +1,6 @@
-.itemsContainer {
-    max-height: 400px;
-    min-height: 400px;
-    overflow-y: scroll;
-}
+@import "tailwindcss";
 
-.pagination {
-    display: flex;
-    gap: 1rem;
-}
-
-.footer {
-    display: flex;
-    gap: 4rem;
-    margin-top: 2rem;
+body {
+    background: #f0f2f5;
+    padding: 1rem;
 }
