@@ -2,13 +2,17 @@
   "name": "frontend",
   "version": "2.0.0",
   "private": true,
+  "type": "module",
   "dependencies": {
+    "@tailwindcss/vite": "^4.1.18",
     "axios": "^1.13.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.23.0",
     "react-scripts": "5.0.1",
-    "react-svg-render": "^1.0.2"
+    "react-svg-render": "^1.0.2",
+    "react-window": "^2.2.6",
+    "tailwindcss": "^4.1.18"
   },
   "scripts": {
     "start": "cross-env PORT=3000 vite",
